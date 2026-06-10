@@ -1,0 +1,66 @@
+                    PROMPTS
+            GEN AI USED: ANTIGRAVITY
+Prompt :
+Hey antigravity ,I am 1st year Btech AIML student and  I have a C mini -project to build the problem statement goes like this:
+Problem Statement: Design and implement a menu-driven 2D Graphics Editor in C using a 2D character array as the drawing canvas. The canvas should initially be filled with the character _ (underscore), and graphical objects should be drawn using the character * (asterisk).
+1.	Write functions to draw a circle, rectangle, line, and triangle.
+2.	You should be able to
+      add objects to the picture,
+      delete objects from the picture, and
+       modify objects in the picture.
+3.	Use a 2d array of characters to store the picture.
+4.	Write a function to display the picture.
+
+Additionally, you can use the ncurses package to create menus and draw pictures.
+help me to build the project I need fully developed interface 
+IMPLEMENTATION PLAN:
+Implementation Plan - 2D Graphics Editor in C
+We will implement a menu-driven 2D Graphics Editor in pure C. The application will use a 2D character array as a canvas (initially filled with _ and drawn with *) and support adding, deleting, and modifying shapes.
+To make deleting and modifying shapes robust and easy for the user, we will maintain an in-memory list of shapes (objects). When rendering the canvas, we will first clear it and then redraw all active shapes from the list using custom geometry functions.
+User Review Required
+NOTE
+No External Dependencies (ncurses alternative)
+Although ncurses was mentioned as an option, it is not standard or pre-installed on Windows MSYS2 compilers (headers are missing). To ensure 100% portability, ease of compilation, and reliability across CMD, PowerShell, and bash terminals, we will build a rich terminal-based UI using standard C library functions (stdio.h, stdlib.h, math.h) styled with ANSI escape codes (for color, bold text, and screen clearing).
+TIP
+Canvas Coordinate Ruler
+To make it easy for users to input coordinates, the canvas display will feature a coordinate ruler along the top and left borders (showing column numbers 0-59 and row numbers 0-19).
+Proposed Changes
+Graphic Editor Application
+We will create a single self-contained C source file main.c that compiles to a standalone executable.
+[NEW] main.c
+The code will contain:
+1.	Data Structures:
+•	ObjectType enum (Line, Rectangle, Circle, Triangle)
+•	Coordinate structs (Point, LineData, RectData, CircleData, TriangleData)
+•	GraphicObject struct (contains type and a union of shape data)
+•	Canvas dimensions (ROWS = 20, COLS = 60) and object list limit (MAX_OBJECTS = 50)
+2.	Drawing Functions:
+•	clear_canvas(char canvas[ROWS][COLS]) - Fills canvas with _
+•	draw_line(char canvas[ROWS][COLS], int x1, int y1, int x2, int y2) - Uses Bresenham's line algorithm
+•	draw_rectangle(char canvas[ROWS][COLS], int x, int y, int w, int h) - Draws borders of the rectangle
+•	draw_circle(char canvas[ROWS][COLS], int cx, int cy, int r) - Uses Bresenham's/Midpoint circle algorithm
+•	draw_triangle(char canvas[ROWS][COLS], int x1, int y1, int x2, int y2, int x3, int y3) - Draws three connecting lines
+3.	Canvas Rendering & State Management:
+•	render_scene(char canvas[ROWS][COLS], GraphicObject objects[], int count) - Clears canvas and draws all objects in order
+•	display_canvas(char canvas[ROWS][COLS], int show_ruler) - Prints the canvas to the console with optional column/row coordinate rulers
+4.	Interactive UI Menu Loop:
+•	Lists current shapes with their indices and parameters
+•	Option [1]: Add Shape (prompts for type and coordinates with input validation)
+•	Option [2]: Modify Shape (prompts for shape index, then lets user change parameters)
+•	Option [3]: Delete Shape (prompts for shape index, shifts elements in array, decreases count)
+•	Option [4]: Clear Canvas (resets shape count to 0)
+•	Option [5]: Toggle Grid/Ruler (enables/disables showing coordinate numbers)
+•	Option [6]: Exit
+Verification Plan
+Automated Build & Test
+We will compile the program using the system gcc compiler: gcc main.c -o main.exe
+Manual Verification
+1.	Run main.exe and test:
+•	Adding a Line, Rectangle, Circle, and Triangle.
+•	Verifying the rendering of each shape.
+•	Deleting a shape (checking that the canvas updates correctly).
+•	Modifying a shape (checking that its parameters update and redraw).
+•	Verifying that coordinates out-of-bounds are gracefully handled or clipped
+
+
+
